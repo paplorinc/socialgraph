@@ -1,0 +1,35 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+group 'pap.lorinc.socialgraph'
+version '1.0.0'
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'application'
+apply plugin: 'idea'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+mainClassName = 'pap.lorinc.socialgraph.SocialGraph'
+
+test {
+    maxHeapSize = '512m'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+dependencies {
+    compile([group: 'org.jetbrains', name: 'annotations', version: '15.0']
+    )
+
+    testCompile([group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.6'],
+                [group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4-SNAPSHOT']
+    )
+}
