@@ -9,7 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class Input {
-    public static final Collection<Function<String, Optional<? extends Command<?>>>> PARSERS = new LinkedHashSet<>();
+    public static final Collection<Function<String, Optional<? extends Command<?>>>> PARSERS = new LinkedHashSet<>(); // TODO DI?
 
     public static Optional<? extends Command<?>> parse(String commandLine) {
         return PARSERS.stream()
@@ -17,5 +17,5 @@ public class Input {
                       .findFirst();
     }
 
-    static <T> Stream<T> stream(Optional<T> opt) { return opt.map(Stream::of).orElseGet(Stream::empty); } /* Added in JDK 9 only */
+    static <T> Stream<T> stream(Optional<T> opt) { return opt.map(Stream::of).orElseGet(Stream::empty); } /* TODO Added in JDK 9 only */
 }

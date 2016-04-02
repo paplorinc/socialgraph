@@ -21,16 +21,16 @@ public enum Time {
     }
 
     static String durationToString(Duration duration) {
-        return Stream.of(toStringIfValid(duration.toDays(), "day", "days"),
-                         toStringIfValid(duration.toHours() % 24, "hour", "hours"),
-                         toStringIfValid(duration.toMinutes() % 60, "minute", "minutes"),
-                         toStringIfValid(duration.getSeconds() % 60, "second", "seconds"),
-                         toStringIfValid(duration.toMillis() % 1000, "milli", "millis"))
+        return Stream.of(toString(duration.toDays(), "day", "days"),
+                         toString(duration.toHours() % 24, "hour", "hours"),
+                         toString(duration.toMinutes() % 60, "minute", "minutes"),
+                         toString(duration.getSeconds() % 60, "second", "seconds"),
+                         toString(duration.toMillis() % 1000, "milli", "millis"))
                      .flatMap(Input::stream)
                      .limit(2)
                      .collect(joining(", "));
     }
-    private static Optional<String> toStringIfValid(long duration, String singular, String plural) {
+    private static Optional<String> toString(long duration, String singular, String plural) {
         switch ((int) duration) {
             case 0: return Optional.empty();
             case 1: return Optional.of(duration + " " + singular);
