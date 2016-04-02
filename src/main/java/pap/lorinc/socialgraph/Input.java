@@ -1,23 +1,21 @@
 package pap.lorinc.socialgraph;
 
-import org.jetbrains.annotations.Nullable;
 import pap.lorinc.socialgraph.commands.Command;
-import pap.lorinc.socialgraph.commands.CommandParser;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.Objects;
-
-import static java.util.Collections.addAll;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class Input {
-    private static final Collection<CommandParser<?>> COMMAND_PARSERS = new LinkedHashSet<>();
+    public static final Collection<Function<String, Optional<? extends Command<?>>>> PARSERS = new LinkedHashSet<>();
 
-    @SafeVarargs public static <T extends CommandParser<?>> void register(T... parsers) { addAll(COMMAND_PARSERS, parsers); }
-
-    public static @Nullable Command<Object> parse(String commandLine) {
-        return COMMAND_PARSERS.stream()
-                              .map(p -> p.parse(commandLine)).filter(Objects::nonNull)
-                              .findFirst().orElse(null);
+    public static Optional<? extends Command<?>> parse(String commandLine) {
+        return PARSERS.stream()
+                      .flatMap(p -> stream(p.apply(commandLine)))
+                      .findFirst();
     }
+
+    static <T> Stream<T> stream(Optional<T> opt) { return opt.map(Stream::of).orElseGet(Stream::empty); } /* Added in JDK 9 only */
 }

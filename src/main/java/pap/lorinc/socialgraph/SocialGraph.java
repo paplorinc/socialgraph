@@ -1,12 +1,18 @@
 package pap.lorinc.socialgraph;
 
+import org.intellij.lang.annotations.RegExp;
 import pap.lorinc.socialgraph.commands.*;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import static pap.lorinc.socialgraph.commands.CommandParser.parse;
+import static java.util.Arrays.asList;
 
 public class SocialGraph {
     public static void main(String... args) {
@@ -20,30 +26,31 @@ public class SocialGraph {
     }
 
     public static void run(InputStream in, PrintStream out) {
-        Input.register(getParsers());
+        Input.PARSERS.addAll(getParsers()); // TODO DI?
 
-        Scanner scanner = new Scanner(in);
-        while (true) {
-            Command<Object> command = Input.parse(scanner.nextLine());
-            if (command == null) return;
-
-            command.get().forEachOrdered(out::println);
-        }
+        for (Scanner scanner = new Scanner(in); scanner.hasNext(); )
+            Input.parse(scanner.nextLine())
+                 .ifPresent(c -> c.get().forEachOrdered(out::println));
     }
 
-    public static CommandParser[] getParsers() {
-        return new CommandParser[]{
-                line -> parse(line, "(?<user>.+?) -> (?<message>.+?)",
-                              m -> new PostCommand(User.of(m.group("user")), m.group("message"))),
+    public static List<Function<String, Optional<? extends Command<?>>>> getParsers() {
+        return asList(line -> matcher(line, "(?<user>.+?) -> (?<message>.+?)")
+                                      .map(m -> new PostCommand(User.of(m.group("user")), m.group("message"))),
 
-                line -> parse(line, "(?<user>.+?) follows (?<followee>.+?)",
-                              m -> new FollowCommand(User.of(m.group("user")), User.of(m.group("followee")))),
+                      line -> matcher(line, "(?<user>.+?) follows (?<followee>.+?)")
+                                      .map(m -> new FollowCommand(User.of(m.group("user")), User.of(m.group("followee")))),
 
-                line -> parse(line, "(?<user>.+?) wall",
-                              m -> new DisplayWallCommand(User.of(m.group("user")))),
+                      line -> matcher(line, "(?<user>.+?) wall")
+                                      .map(m -> new DisplayWallCommand(User.of(m.group("user")))),
 
-                line -> parse(line, "(?<user>.+?)",
-                              m -> new ReadCommand(User.of(m.group("user"))))
-        };
+                      line -> matcher(line, "(?<user>.+?)")
+                                      .map(m -> new ReadCommand(User.of(m.group("user"))))
+                     );
+    }
+
+    private static Optional<Matcher> matcher(String line, @RegExp String pattern) {
+        Matcher matcher = Pattern.compile("^" + pattern + "$").matcher(line.trim());
+        return (matcher.find() && matcher.groupCount() > 0) ? Optional.of(matcher)
+                                                            : Optional.empty();
     }
 }

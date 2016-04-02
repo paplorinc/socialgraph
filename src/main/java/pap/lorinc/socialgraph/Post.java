@@ -1,7 +1,5 @@
 package pap.lorinc.socialgraph;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -24,7 +22,7 @@ public final class Post implements Comparable<Post> {
                              user, message, durationToString(Duration.between(time, TIME.now())));
     }
 
-    @Override public int compareTo(@NotNull Post that) { return that.time.compareTo(this.time); }
+    @Override public int compareTo(Post that) { return that.time.compareTo(this.time); }
 
     @Override public boolean equals(Object o) {
         if (this == o) return true;
