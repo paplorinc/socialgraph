@@ -13,7 +13,7 @@ public final class FollowCommand extends Command<Void> {
     }
 
     @Override public Stream<Void> get() {
-        user.wall.add(followee.timeline);
+        user.subscriptions.add(followee);
         return Stream.empty();
     }
 

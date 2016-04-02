@@ -6,7 +6,7 @@ import static java.util.Arrays.asList;
 
 public final class User {
     public final Deque<Post> timeline = new ArrayDeque<>();
-    public final Set<Deque<Post>> wall = new HashSet<>(asList(timeline));
+    public final Set<User> subscriptions = new HashSet<>(asList(this));
 
     public final String name;
     private User(String name) { this.name = name; }

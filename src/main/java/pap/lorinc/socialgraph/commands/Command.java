@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 public abstract class Command<T> implements Supplier<Stream<T>> {
     public final User user;
-    public Command(User user) { this.user = user; }
+    protected Command(User user) { this.user = user; }
 
     @Override public boolean equals(Object o) {
         if (this == o) return true;
