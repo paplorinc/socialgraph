@@ -1,5 +1,6 @@
 package pap.lorinc.socialgraph.commands;
 
+import pap.lorinc.socialgraph.Post;
 import pap.lorinc.socialgraph.User;
 
 import java.util.Objects;
@@ -12,7 +13,10 @@ public final class PostCommand extends Command<Void> {
         this.message = message;
     }
 
-    @Override public Stream<Void> get() { return Stream.empty(); }
+    @Override public Stream<Void> get() {
+        user.timeline.addFirst(new Post(user, message));
+        return Stream.empty();
+    }
 
     @Override public boolean equals(Object o) {
         if (this == o) return true;

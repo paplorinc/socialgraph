@@ -12,7 +12,10 @@ public final class FollowCommand extends Command<Void> {
         this.followee = followee;
     }
 
-    @Override public Stream<Void> get() { return Stream.empty(); }
+    @Override public Stream<Void> get() {
+        user.wall.add(followee.timeline);
+        return Stream.empty();
+    }
 
     @Override public boolean equals(Object o) {
         if (this == o) return true;

@@ -8,5 +8,5 @@ import java.util.stream.Stream;
 public final class ReadCommand extends Command<Post> {
     public ReadCommand(User user) { super(user); }
 
-    @Override public Stream<Post> get() { return Stream.empty(); }
+    @Override public Stream<Post> get() { return user.timeline.stream(); }
 }

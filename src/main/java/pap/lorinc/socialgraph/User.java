@@ -1,9 +1,13 @@
 package pap.lorinc.socialgraph;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
+import static java.util.Arrays.asList;
 
 public final class User {
+    public final Deque<Post> timeline = new ArrayDeque<>();
+    public final Set<Deque<Post>> wall = new HashSet<>(asList(timeline));
+
     public final String name;
     private User(String name) { this.name = name; }
 
