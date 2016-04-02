@@ -5,14 +5,23 @@ import org.jetbrains.annotations.Nullable;
 
 import java.time.Clock;
 import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import static java.time.Clock.systemDefaultZone;
+import static java.time.Duration.ofSeconds;
 import static java.util.stream.Collectors.joining;
 
 public enum Time {
     TIME;
-    public Clock CLOCK = Clock.systemDefaultZone();
+
+    private int offsetSeconds = 0;
+    public void advanceSeconds(int seconds) { offsetSeconds += seconds; }
+    public ZonedDateTime now() {
+        Clock clock = Clock.offset(systemDefaultZone(), ofSeconds(offsetSeconds));
+        return ZonedDateTime.now(clock);
+    }
 
     static @NotNull String durationToString(@NotNull Duration duration) {
         return Stream.of(toStringIfValid(duration.toDays(), "day", "days"),

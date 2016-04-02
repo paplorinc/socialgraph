@@ -16,13 +16,12 @@ public final class Post implements Comparable<Post> {
     public Post(User user, String message) {
         this.user = user;
         this.message = message;
-        this.time = now();
+        this.time = TIME.now();
     }
-    private static @NotNull ZonedDateTime now() {return ZonedDateTime.now(TIME.CLOCK);}
 
     @Override public String toString() {
         return String.format("%s: `%s` (%s ago)",
-                             user, message, durationToString(Duration.between(time, now())));
+                             user, message, durationToString(Duration.between(time, TIME.now())));
     }
 
     @Override public int compareTo(@NotNull Post that) { return that.time.compareTo(this.time); }

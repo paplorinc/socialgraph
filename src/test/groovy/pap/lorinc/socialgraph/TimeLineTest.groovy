@@ -7,10 +7,6 @@ import pap.lorinc.socialgraph.commands.ReadCommand
 import spock.lang.Specification
 import spock.lang.Stepwise
 
-import java.time.Clock
-import java.time.Duration
-
-import static java.time.temporal.ChronoUnit.SECONDS
 import static pap.lorinc.socialgraph.Time.TIME
 
 @Stepwise class TimeLineTest extends Specification {
@@ -61,7 +57,7 @@ import static pap.lorinc.socialgraph.Time.TIME
 
     static post(int userIndex, String message) {
         new PostCommand(users[userIndex], message).get()
-        TIME.CLOCK = Clock.offset(TIME.CLOCK, Duration.of(new Random().nextInt(100000), SECONDS)) // simulate time flow
+        TIME.advanceSeconds(new Random().nextInt(10_0000))
     }
     static follow(int userId, int followeeId) { new FollowCommand(users[userId], users[followeeId]).get() }
     static timelineContents() { users.indices.collect { new ReadCommand(users[it]).get().collect() } }
