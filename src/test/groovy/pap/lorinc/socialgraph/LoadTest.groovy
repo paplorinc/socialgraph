@@ -10,6 +10,7 @@ import java.time.Duration
 import java.time.ZonedDateTime
 
 import static pap.lorinc.socialgraph.Time.TIME
+import static pap.lorinc.socialgraph.utils.DateTimes.durationToString
 
 class LoadTest extends Specification {
     static R = new Random(0)
@@ -47,7 +48,7 @@ class LoadTest extends Specification {
         def start = ZonedDateTime.now()
         closure()
         def elapsed = Duration.between(start, ZonedDateTime.now())
-        println Time.durationToString(elapsed)
+        println durationToString(elapsed)
         elapsed
     }
 

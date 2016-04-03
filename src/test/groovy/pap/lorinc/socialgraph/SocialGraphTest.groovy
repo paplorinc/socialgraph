@@ -3,6 +3,7 @@ package pap.lorinc.socialgraph
 import org.spockframework.util.StringMessagePrintStream
 import spock.lang.Specification
 
+import static pap.lorinc.socialgraph.SocialGraph.defaultParser
 import static pap.lorinc.socialgraph.SocialGraph.run
 
 class SocialGraphTest extends Specification {
@@ -33,7 +34,8 @@ class SocialGraphTest extends Specification {
                     '''.trim().split('\n').toList())
         
         then:   run(new ByteArrayInputStream(input),
-                    { assert it.startsWith(expectedOutput.pop().trim()) } as StringMessagePrintStream 
+                    { assert it.startsWith(expectedOutput.pop().trim()) } as StringMessagePrintStream,
+                    defaultParser()
                 )
     }   
     /*@formatter:on*/

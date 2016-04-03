@@ -1,11 +1,11 @@
 package pap.lorinc.socialgraph;
 
-import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import static java.time.Duration.between;
 import static pap.lorinc.socialgraph.Time.TIME;
-import static pap.lorinc.socialgraph.Time.durationToString;
+import static pap.lorinc.socialgraph.utils.DateTimes.durationToString;
 
 public final class Post implements Comparable<Post> {
     private final User user;
@@ -19,7 +19,7 @@ public final class Post implements Comparable<Post> {
 
     @Override public String toString() {
         return String.format("%s: `%s` (%s ago)",
-                             user, message, durationToString(Duration.between(time, TIME.now())));
+                             user, message, durationToString(between(time, TIME.now())));
     }
 
     @Override public int compareTo(Post that) { return that.time.compareTo(this.time); }

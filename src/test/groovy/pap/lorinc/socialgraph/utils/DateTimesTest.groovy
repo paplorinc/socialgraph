@@ -1,15 +1,16 @@
-package pap.lorinc.socialgraph
+package pap.lorinc.socialgraph.utils
 
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import java.time.Duration
+import static java.time.Duration.parse
+import static pap.lorinc.socialgraph.utils.DateTimes.durationToString
 
-@Unroll class TimeTest extends Specification {
+@Unroll class DateTimesTest extends Specification {
     /*@formatter:off*/
     def 'durationToString #result?'() {
-        when:   def duration = Duration.parse(durationString)
-        then:   Time.durationToString(duration) == result
+        when:   def duration = parse(durationString)
+        then:   durationToString(duration) == result
         
         where:  durationString || result
                 'PT0.001S'     || '1 milli' 

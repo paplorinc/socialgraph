@@ -7,15 +7,14 @@ import pap.lorinc.socialgraph.commands.ReadCommand
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static pap.lorinc.socialgraph.Input.parse
-import static pap.lorinc.socialgraph.SocialGraph.getParsers
+import static pap.lorinc.socialgraph.SocialGraph.defaultParser
 
-@Unroll class InputTest extends Specification {
-    def setupSpec() { Input.PARSERS.addAll(parsers); }
+@Unroll class ParserTest extends Specification {
+    static parser = defaultParser()
 
     /*@formatter:off*/
     def 'can parse Post input: "#command"?'() {
-        expect: parse(command).get() == new PostCommand(User.of(user), message) 
+        expect: parser.parse(command).get() == new PostCommand(User.of(user), message) 
 
         where:  user | message
                 'u1' | 'u1 m1' 
@@ -26,7 +25,7 @@ import static pap.lorinc.socialgraph.SocialGraph.getParsers
     } 
 
     def 'can parse Follow input: "#command"?'() {
-        expect: parse(command).get() == new FollowCommand(User.of(follower), User.of(followee)) 
+        expect: parser.parse(command).get() == new FollowCommand(User.of(follower), User.of(followee)) 
 
         where:  follower | followee
                 'u1'     | 'u1' 
@@ -37,14 +36,14 @@ import static pap.lorinc.socialgraph.SocialGraph.getParsers
     }
     
     def 'can parse Read input: "#command"?'() {
-        expect: parse(command).get() == new ReadCommand(User.of(user)) 
+        expect: parser.parse(command).get() == new ReadCommand(User.of(user)) 
 
         where:  user << ['u1', 'u2', 'u2'] 
                 command = "$user" 
     } 
     
     def 'can parse DisplayWall input: "#command"?'() {
-        expect: parse(command).get() == new DisplayWallCommand(User.of(user)) 
+        expect: parser.parse(command).get() == new DisplayWallCommand(User.of(user)) 
 
         where:  user << ['u1', 'u2', 'u2'] 
                 command = "$user wall" 
