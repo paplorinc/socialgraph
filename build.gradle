@@ -1,7 +1,5 @@
 buildscript {
-    repositories {
-        mavenCentral()
-    }
+    repositories { mavenCentral() }
 }
 
 group 'pap.lorinc.socialgraph'
@@ -16,9 +14,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 
 mainClassName = 'pap.lorinc.socialgraph.SocialGraph'
 
-test {
-    maxHeapSize = '512m'
-}
+test { maxHeapSize = '512m' }
 
 repositories {
     mavenCentral()
@@ -26,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compile([group: 'org.jetbrains', name: 'annotations', version: '15.0']
+    compileOnly([group: 'org.jetbrains', name: 'annotations', version: '15.0']
     )
 
     testCompile([group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.6'],

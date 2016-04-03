@@ -6,16 +6,18 @@ import pap.lorinc.socialgraph.User;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public final class PostCommand extends Command<Void> {
+import static java.util.stream.Stream.empty;
+
+public final class PostCommand extends Command {
     private final String message;
     public PostCommand(User user, String message) {
         super(user);
         this.message = message;
     }
 
-    @Override public Stream<Void> get() {
-        user.timeline.addFirst(new Post(user, message));
-        return Stream.empty();
+    @Override public Stream<Post> get() {
+        user.post(new Post(user, message));
+        return empty();
     }
 
     @Override public boolean equals(Object o) {

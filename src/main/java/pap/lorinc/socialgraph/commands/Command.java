@@ -1,14 +1,15 @@
 package pap.lorinc.socialgraph.commands;
 
+import pap.lorinc.socialgraph.Post;
 import pap.lorinc.socialgraph.User;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public abstract class Command<T> implements Supplier<Stream<T>> {
+public abstract class Command implements Supplier<Stream<Post>> {
     public final User user;
-    protected Command(User user) { this.user = user; }
+    Command(User user) { this.user = user; }
 
     @Override public boolean equals(Object o) {
         if (this == o) return true;
