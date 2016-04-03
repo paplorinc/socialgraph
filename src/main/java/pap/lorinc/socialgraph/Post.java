@@ -1,13 +1,15 @@
 package pap.lorinc.socialgraph;
 
+import lombok.EqualsAndHashCode;
+
 import java.time.ZonedDateTime;
-import java.util.Objects;
 
 import static java.lang.String.format;
 import static java.time.Duration.between;
 import static pap.lorinc.socialgraph.Time.TIME;
 import static pap.lorinc.socialgraph.utils.DateTimes.durationToString;
 
+@EqualsAndHashCode(exclude = "time")
 public final class Post implements Comparable<Post> {
     private final ZonedDateTime time = TIME.now();
     private final User user;
