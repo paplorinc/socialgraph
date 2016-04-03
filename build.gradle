@@ -30,7 +30,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly([group: 'org.jetbrains', name: 'annotations', version: '15.0']
+    compileOnly([group: 'org.jetbrains', name: 'annotations', version: '15.0'],
+                [group: 'org.projectlombok', name: 'lombok', version: '1.16.8'] /* Might need IDE plugin if you want to run the tests outside of Gradle */
     )
 
     testCompile([group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.6'],
