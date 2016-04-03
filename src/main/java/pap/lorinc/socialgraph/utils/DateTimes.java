@@ -1,5 +1,7 @@
 package pap.lorinc.socialgraph.utils;
 
+import lombok.experimental.UtilityClass;
+
 import java.time.Duration;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -8,6 +10,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.joining;
 
+@UtilityClass
 public class DateTimes {
     public static String durationToString(Duration duration) {
         return Stream.of(toString(duration.toDays(), "day", "days"),
