@@ -1,14 +1,14 @@
 package pap.lorinc.socialgraph.commands;
 
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Value;
 import pap.lorinc.socialgraph.Post;
 import pap.lorinc.socialgraph.User;
 
 import java.util.stream.Stream;
 
-@ToString @EqualsAndHashCode(callSuper = true)
-public final class DisplayWallCommand extends Command {
+@Value @EqualsAndHashCode(callSuper = true)
+public class DisplayWallCommand extends Command {
     public DisplayWallCommand(User user) { super(user); }
 
     @Override public Stream<Post> get() {

@@ -1,15 +1,15 @@
 package pap.lorinc.socialgraph.commands;
 
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Value;
 import pap.lorinc.socialgraph.Post;
 import pap.lorinc.socialgraph.User;
 
 import java.util.stream.Stream;
 import static java.util.stream.Stream.empty;
 
-@ToString @EqualsAndHashCode(callSuper = true)
-public final class PostCommand extends Command {
+@Value @EqualsAndHashCode(callSuper = true)
+public class PostCommand extends Command {
     private final String message;
     public PostCommand(User user, String message) {
         super(user);
