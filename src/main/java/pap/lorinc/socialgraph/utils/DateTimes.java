@@ -1,14 +1,13 @@
 package pap.lorinc.socialgraph.utils;
 
+import javaslang.collection.Stream;
+import javaslang.control.Option;
 import lombok.experimental.UtilityClass;
 
 import java.time.Duration;
-import java.util.Optional;
-import java.util.stream.Stream;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.stream.Collectors.joining;
+import static javaslang.control.Option.none;
+import static javaslang.control.Option.of;
 
 @UtilityClass
 public class DateTimes {
@@ -18,13 +17,13 @@ public class DateTimes {
                          toString(duration.toMinutes() % 60, "minute", "minutes"),
                          toString(duration.getSeconds() % 60, "second", "seconds"),
                          toString(duration.toMillis() % 1000, "milli", "millis"))
-                     .flatMap(Streams::stream)
-                     .limit(2)
-                     .collect(joining(", "));
+                     .flatMap(Option::toStream)
+                     .take(2)
+                     .mkString(", ");
     }
-    private static Optional<String> toString(long duration, String singular, String plural) {
+    private static Option<String> toString(long duration, String singular, String plural) {
         switch ((int) duration) {
-            case 0: return empty();
+            case 0: return none();
             case 1: return of(duration + " " + singular);
             default: return of(duration + " " + plural);
         }

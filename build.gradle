@@ -30,6 +30,9 @@ repositories {
 }
 
 dependencies {
+    compile([group: 'io.javaslang', name: 'javaslang', version: '2.0.2']
+    )
+
     compileOnly([group: 'org.jetbrains', name: 'annotations', version: '15.0'],
                 [group: 'org.projectlombok', name: 'lombok', version: '1.16.8'] /* Might need IDE plugin if you want to run the tests outside of Gradle */
     )

@@ -11,8 +11,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SocialGraph_main" />
+    <orderEntry type="library" name="Gradle: io.javaslang:javaslang:2.0.2" level="project" />
     <orderEntry type="library" name="Gradle: org.codehaus.groovy:groovy-all:2.4.6" level="project" />
     <orderEntry type="library" name="Gradle: org.spockframework:spock-core:1.1-groovy-2.4-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: io.javaslang:javaslang-match:2.0.2" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
   </component>

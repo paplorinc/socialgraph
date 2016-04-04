@@ -8,9 +8,9 @@ import static pap.lorinc.socialgraph.utils.Matchers.matcher
 @Unroll class MatchersTest extends Specification {
     /*@formatter:off*/
     def 'matchers'() {
-        expect: matcher(line, regexp).present == isPresent 
+        expect: matcher(line, regexp).defined == matched 
 
-        where:  line   | regexp      || isPresent
+        where:  line   | regexp      || matched
                 'abc'  | 'abc'       || false
                                         
                 ''     | 'a(b)c'     || false

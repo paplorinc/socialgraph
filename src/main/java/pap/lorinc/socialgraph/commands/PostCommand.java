@@ -1,12 +1,12 @@
 package pap.lorinc.socialgraph.commands;
 
+import javaslang.collection.Iterator;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import pap.lorinc.socialgraph.Post;
 import pap.lorinc.socialgraph.User;
 
-import java.util.stream.Stream;
-import static java.util.stream.Stream.empty;
+import static javaslang.collection.Iterator.empty;
 
 @Value @EqualsAndHashCode(callSuper = true)
 public class PostCommand extends Command {
@@ -16,7 +16,7 @@ public class PostCommand extends Command {
         this.message = message;
     }
 
-    @Override public Stream<Post> get() {
+    @Override public Iterator<Post> apply() {
         user.post(new Post(user, message));
         return empty();
     }

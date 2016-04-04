@@ -1,21 +1,24 @@
 package pap.lorinc.socialgraph;
 
-import java.util.*;
-
-import static java.util.Arrays.asList;
+import javaslang.Function1;
+import javaslang.collection.HashSet;
+import javaslang.collection.List;
+import javaslang.collection.Set;
 
 public class User {
-    public final Deque<Post> timeline = new ArrayDeque<>();
-    public final Set<User> subscriptions = new HashSet<>(asList(this));
+    private List<Post> timeline = List.empty();
+    private Set<User> subscriptions = HashSet.of(this);
+    private final String name;
 
-    public final String name;
     private User(String name) { this.name = name; }
+    private static final Function1<String, User> OF = Function1.of(User::new).memoized();
+    static User of(String name) { return OF.apply(name); }
 
-    private static final Map<String, User> USERS = new HashMap<>();
-    public static User of(String name) { return USERS.computeIfAbsent(name, User::new); }
+    public List<Post> getPosts() { return timeline; }
+    public void post(Post post) { timeline = timeline.prepend(post); }
 
-    public void post(Post post) { timeline.addFirst(post); }
-    public void subscribe(User followee) { subscriptions.add(followee); }
+    public Set<User> getSubscriptions() { return subscriptions; }
+    public void subscribe(User followee) { subscriptions = subscriptions.add(followee); }
 
     @Override public String toString() { return name; }
 }
