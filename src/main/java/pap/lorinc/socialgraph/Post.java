@@ -23,15 +23,4 @@ public final class Post implements Comparable<Post> {
     }
 
     @Override public int compareTo(Post that) { return that.time.compareTo(this.time); }
-
-    @Override public boolean equals(Object o) {
-        if (this == o) return true;
-        else if (o == null || getClass() != o.getClass()) return false;
-
-        Post post = (Post) o;
-        return Objects.equals(user, post.user)
-               && Objects.equals(message, post.message)
-               && Objects.equals(time, post.time);
-    }
-    @Override public int hashCode() { return Objects.hash(user, message, time); }
 }

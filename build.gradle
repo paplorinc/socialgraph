@@ -2,6 +2,11 @@ buildscript {
     repositories { mavenCentral() }
 }
 
+plugins {
+    id 'jacoco'
+    id 'com.github.kt3k.coveralls' version '2.6.3'
+}
+
 group 'pap.lorinc.socialgraph'
 version '1.0.0'
 
@@ -15,6 +20,9 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 mainClassName = 'pap.lorinc.socialgraph.SocialGraph'
 
 test { maxHeapSize = '512m' }
+jacocoTestReport {
+    reports { xml.enabled = html.enabled = true }
+}
 
 repositories {
     mavenCentral()
