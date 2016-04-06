@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 
 import static java.lang.String.format;
 import static java.time.Duration.between;
-import static pap.lorinc.socialgraph.Time.TIME;
+import static pap.lorinc.socialgraph.TimeProvider.TIME;
 import static pap.lorinc.socialgraph.utils.DateTimes.durationToString;
 
 @Value

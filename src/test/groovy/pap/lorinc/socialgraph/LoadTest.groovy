@@ -9,7 +9,7 @@ import spock.lang.Specification
 import java.time.Duration
 import java.time.ZonedDateTime
 
-import static pap.lorinc.socialgraph.Time.TIME
+import static pap.lorinc.socialgraph.TimeProvider.TIME
 import static pap.lorinc.socialgraph.utils.DateTimes.durationToString
 
 class LoadTest extends Specification {
@@ -35,12 +35,12 @@ class LoadTest extends Specification {
                 }
         then:   'querying their timeline content is fast'
                 timed {
-                    users.each { read(it).count() }
+                    for (u in users) read(u).collect()
                 } < Duration.ofSeconds(1)
         and:   'querying their wall content is fast'
                 timed {
-                    users.each { displayWall(it).count() }
-                } < Duration.ofSeconds(30)
+                    for (u in users) displayWall(u).collect()
+                } < Duration.ofMinutes(2)
     }
     /*@formatter:on*/
 
@@ -52,11 +52,11 @@ class LoadTest extends Specification {
         elapsed
     }
 
-    static post(User user, String message) {
-        new PostCommand(user, message).get()
+    static void post(User user, String message) {
+        new PostCommand(user, message).apply()
         TIME.advanceSeconds(R.nextInt(10_0000))
     }
-    static follow(User user, User followee) { new FollowCommand(user, followee).get() }
-    static read(User user) { new ReadCommand(user).get() }
-    static displayWall(User user) { new DisplayWallCommand(user).get() }
+    static void follow(User user, User followee) { new FollowCommand(user, followee).apply() }
+    static read(User user) { new ReadCommand(user).apply() }
+    static displayWall(User user) { new DisplayWallCommand(user).apply() }
 }

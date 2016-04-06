@@ -23,9 +23,9 @@ public class SocialGraph {
     }
 
     public static void run(InputStream in, PrintStream out, Parser parser) {
-        for (Scanner scanner = new Scanner(in); scanner.hasNext(); ) 
+        for (Scanner scanner = new Scanner(in); scanner.hasNext(); )
             parser.parse(scanner.nextLine())
-                      .peek(c -> c.apply().forEach(out::println));
+                  .peek(c -> c.apply().forEach(out::println));
     }
 
     public static Parser defaultParser() {

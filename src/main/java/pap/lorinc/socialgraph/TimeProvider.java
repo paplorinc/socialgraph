@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 import static java.time.Clock.systemDefaultZone;
 import static java.time.Duration.ofSeconds;
 
-public enum Time {
+public enum TimeProvider {
     TIME;
 
     private int offsetSeconds = 0;

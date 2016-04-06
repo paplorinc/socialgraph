@@ -7,7 +7,7 @@ import pap.lorinc.socialgraph.commands.ReadCommand
 import spock.lang.Specification
 import spock.lang.Stepwise
 
-import static pap.lorinc.socialgraph.Time.TIME
+import static pap.lorinc.socialgraph.TimeProvider.TIME
 
 @Stepwise class TimeLineTest extends Specification {
     static users = ['u0', 'u1', 'u2', 'u3'].collect { User.of(it) }
@@ -51,15 +51,16 @@ import static pap.lorinc.socialgraph.Time.TIME
     }
 
     def '5) the walls are sorted in a newest-on-top order?'() {
-        expect: wallContents().each { assert it.collect() == it.collect().toSorted() }
+        expect: for (posts in wallContents()*.collect()) 
+                    assert posts == posts.toSorted()
     } 
     /*@formatter:on*/
 
-    static post(int userIndex, String message) {
-        new PostCommand(users[userIndex], message).get()
+    static void post(int userIndex, String message) {
+        new PostCommand(users[userIndex], message).apply()
         TIME.advanceSeconds(new Random().nextInt(10_0000))
     }
-    static follow(int userId, int followeeId) { new FollowCommand(users[userId], users[followeeId]).get() }
-    static timelineContents() { users.indices.collect { new ReadCommand(users[it]).get().collect() } }
-    static wallContents() { users.indices.collect { new DisplayWallCommand(users[it]).get().collect() } }
+    static void follow(int userId, int followeeId) { new FollowCommand(users[userId], users[followeeId]).apply() }
+    static timelineContents() { users.indices.collect { new ReadCommand(users[it]).apply() } }
+    static wallContents() { users.indices.collect { new DisplayWallCommand(users[it]).apply() } }
 }
