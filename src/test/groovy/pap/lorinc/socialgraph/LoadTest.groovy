@@ -40,7 +40,7 @@ class LoadTest extends Specification {
         and:   'querying their wall content is fast'
                 timed {
                     for (u in users) displayWall(u).collect()
-                } < Duration.ofMinutes(2)
+                } < Duration.ofMinutes(1)
     }
     /*@formatter:on*/
 
