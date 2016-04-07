@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
 buildscript {
     repositories { mavenCentral() }
 }
@@ -19,7 +21,10 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 
 mainClassName = 'pap.lorinc.socialgraph.SocialGraph'
 
-test { maxHeapSize = '512m' }
+test {
+    maxHeapSize = '512m'
+    testLogging.exceptionFormat = TestExceptionFormat.FULL
+}
 jacocoTestReport {
     reports { xml.enabled = html.enabled = true }
 }
