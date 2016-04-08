@@ -1,4 +1,4 @@
-package pap.lorinc.socialgraph.commands.factory;
+package pap.lorinc.socialgraph.actions.factory;
 
 import javaslang.control.Option;
 import org.intellij.lang.annotations.RegExp;

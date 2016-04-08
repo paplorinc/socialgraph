@@ -1,16 +1,16 @@
-package pap.lorinc.socialgraph.commands.factory
+package pap.lorinc.socialgraph.actions.factory
 
-import pap.lorinc.socialgraph.commands.DisplayWallCommand
-import pap.lorinc.socialgraph.commands.FollowCommand
-import pap.lorinc.socialgraph.commands.PostCommand
-import pap.lorinc.socialgraph.commands.ReadCommand
+import pap.lorinc.socialgraph.actions.commands.FollowCommand
+import pap.lorinc.socialgraph.actions.commands.PostCommand
+import pap.lorinc.socialgraph.actions.queries.DisplayWallQuery
+import pap.lorinc.socialgraph.actions.queries.ReadQuery
 import pap.lorinc.socialgraph.users.User
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import static pap.lorinc.socialgraph.SocialGraph.defaultFactory
 
-@Unroll class CommandsTest extends Specification {
+@Unroll class ActionFactoryTest extends Specification {
     static factory = defaultFactory()
 
     /*@formatter:off*/
@@ -35,14 +35,14 @@ import static pap.lorinc.socialgraph.SocialGraph.defaultFactory
     }
     
     def 'can parse Read input: "#command"?'() {
-        when:   def post = factory.create("$user").get() as ReadCommand
+        when:   def post = factory.create("$user").get() as ReadQuery
         then:   post.user == User.of(user) 
 
         where:  user << ['u1', 'u2', 'u2'] 
     } 
     
     def 'can parse DisplayWall input: "#command"?'() {
-        when:   def post = factory.create("$user wall").get() as DisplayWallCommand
+        when:   def post = factory.create("$user wall").get() as DisplayWallQuery
         then:   post.user == User.of(user) 
 
         where:  user << ['u1', 'u2', 'u2'] 

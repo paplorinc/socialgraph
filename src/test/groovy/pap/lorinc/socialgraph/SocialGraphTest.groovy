@@ -3,7 +3,7 @@ package pap.lorinc.socialgraph
 import spock.lang.Specification
 
 import static pap.lorinc.socialgraph.SocialGraph.defaultFactory
-import static pap.lorinc.socialgraph.SocialGraph.run
+import static pap.lorinc.socialgraph.SocialGraph.main
 
 class SocialGraphTest extends Specification {
     /*@formatter:off*/
@@ -30,10 +30,11 @@ class SocialGraphTest extends Specification {
                        Bob: `Damn! We lost!`
                        Alice: `I love the weather today`'''.readLines() as ArrayDeque<String> 
         
-        then:   run(input,
+        then:   main(input,
                     { 
-                        sleep(100)
-                        assert "$it".startsWith(output.pop().trim())
+                        def expected = output.pop().trim()
+                        assert "$it".startsWith(expected)
+                        sleep(100) 
                     },
                     defaultFactory()
                 )

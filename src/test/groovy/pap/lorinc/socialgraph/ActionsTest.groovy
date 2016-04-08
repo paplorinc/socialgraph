@@ -1,9 +1,9 @@
 package pap.lorinc.socialgraph
 
-import pap.lorinc.socialgraph.commands.DisplayWallCommand
-import pap.lorinc.socialgraph.commands.FollowCommand
-import pap.lorinc.socialgraph.commands.PostCommand
-import pap.lorinc.socialgraph.commands.ReadCommand
+import pap.lorinc.socialgraph.actions.commands.FollowCommand
+import pap.lorinc.socialgraph.actions.commands.PostCommand
+import pap.lorinc.socialgraph.actions.queries.DisplayWallQuery
+import pap.lorinc.socialgraph.actions.queries.ReadQuery
 import pap.lorinc.socialgraph.posts.Timelines
 import pap.lorinc.socialgraph.users.Subscriptions
 import pap.lorinc.socialgraph.users.User
@@ -11,7 +11,7 @@ import spock.lang.Specification
 
 import static pap.lorinc.socialgraph.posts.TimeProvider.TIME
 
-class CommandTest extends Specification {
+class ActionsTest extends Specification {
     static users = ['u0', 'u1', 'u2', 'u3'].collect { User.of(it) }
     static timelines = new Timelines()
     static subscriptions = new Subscriptions()
@@ -71,10 +71,10 @@ class CommandTest extends Specification {
     /*@formatter:on*/
 
     static void post(User user, String message) {
-        new PostCommand(timelines, user, message).apply()
+        new PostCommand(timelines, subscriptions, user, message).run()
         TIME.advanceSeconds(new Random().nextInt(10_0000))
     }
-    static void follow(User user, User followee) { new FollowCommand(subscriptions, user, followee).apply() }
-    static userTimelines() { users.collect { new ReadCommand(timelines, it).apply() } }
-    static userWalls() { users.collect { new DisplayWallCommand(timelines, subscriptions, it).apply() } }
+    static void follow(User user, User followee) { new FollowCommand(timelines, subscriptions, user, followee).run() }
+    static userTimelines() { users.collect { new ReadQuery(timelines, subscriptions, it).get() } }
+    static userWalls() { users.collect { new DisplayWallQuery(timelines, subscriptions, it).get() } }
 }

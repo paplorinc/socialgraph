@@ -6,6 +6,7 @@ import javaslang.control.Option;
 import java.time.Duration;
 import java.util.function.Supplier;
 
+import static javaslang.API.*;
 import static javaslang.control.Option.none;
 import static javaslang.control.Option.of;
 
@@ -23,10 +24,8 @@ public class DateTimes {
                        .mkString(", "); // ... in case you take more than 1 time unit
     }
     private static Option<String> toString(long duration, String singular, String plural) {
-        switch ((int) duration) {
-            case 0: return none();
-            case 1: return of(duration + " " + singular);
-            default: return of(duration + " " + plural);
-        }
+        return Match(duration).of(Case(0L, none()),
+                                  Case(1L, of(duration + " " + singular)),
+                                  Case($(), of(duration + " " + plural)));
     }
 }

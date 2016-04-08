@@ -1,9 +1,9 @@
 package pap.lorinc.socialgraph
 
-import pap.lorinc.socialgraph.commands.DisplayWallCommand
-import pap.lorinc.socialgraph.commands.FollowCommand
-import pap.lorinc.socialgraph.commands.PostCommand
-import pap.lorinc.socialgraph.commands.ReadCommand
+import pap.lorinc.socialgraph.actions.commands.FollowCommand
+import pap.lorinc.socialgraph.actions.commands.PostCommand
+import pap.lorinc.socialgraph.actions.queries.DisplayWallQuery
+import pap.lorinc.socialgraph.actions.queries.ReadQuery
 import pap.lorinc.socialgraph.posts.Timelines
 import pap.lorinc.socialgraph.users.Subscriptions
 import pap.lorinc.socialgraph.users.User
@@ -60,10 +60,10 @@ class PerformanceTest extends Specification {
     }
 
     static void post(User user, String message) {
-        new PostCommand(timelines, user, message).apply()
+        new PostCommand(timelines, subscriptions, user, message).run()
         TIME.advanceSeconds(R.nextInt(10_0000))
     }
-    static void follow(User user, User followee) { new FollowCommand(subscriptions, user, followee).apply() }
-    static read(User user) { new ReadCommand(timelines, user).apply() }
-    static displayWall(User user) { new DisplayWallCommand(timelines, subscriptions, user).apply() }
+    static void follow(User user, User followee) { new FollowCommand(timelines, subscriptions, user, followee).run() }
+    static read(User user) { new ReadQuery(timelines, subscriptions, user).get() }
+    static displayWall(User user) { new DisplayWallQuery(timelines, subscriptions, user).get() }
 }
