@@ -18,40 +18,53 @@ class CommandTest extends Specification {
 
     /*@formatter:off*/
     def 'executing different commands?'() {
-        // 1) posted messages appear on the wall
+        /* 1) posted messages appear on the wall */
         when:   post(users[0], 'u0 m1')
                 post(users[1], 'u1 m1')
                 post(users[1], 'u1 m2')
                 post(users[0], 'u0 m2')
                 post(users[2], 'u2 m1')
                 post(users[0], 'u0 m3')
-        then:   userTimelines()*.size() == [3, 2, 1, 0]
+         
+        then:   def expectedPostCounts = [3,2,1,0]
+                userTimelines()*.size() ==  expectedPostCounts
                 
-        // 2) the timeline is sorted in a newest-on-top order
+        /* 2) the timeline is sorted in a newest-on-top order */
         expect: userTimelines().each { assert it.collect() == it.collect().toSorted() }
 
-        // 3) users can follow other walls
-        when:   follow(0, 0)
-        then:   userWalls()*.size() == [3, 2, 1, 0]
+        /* 3) users can follow other walls*/ 
+        when:   follow(users[0], users[0])
+                def expectedWallSizes = expectedPostCounts.collect() 
+        then:   userWalls()*.size() == expectedWallSizes
 
-        when:   follow(0, 1)
-        then:   userWalls()*.size() == [3+2, 2, 1, 0]
+        when:   follow(users[0], users[1])
+                expectedWallSizes[0] += expectedPostCounts[1]
+        then:   userWalls()*.size() == expectedWallSizes
 
-        when:   follow(1, 0)
-        then:   userWalls()*.size() == [3+2, 2+3, 1, 0]
+        when:   follow(users[1], users[0])
+                expectedWallSizes[1] += expectedPostCounts[0]
+        then:   userWalls()*.size() == expectedWallSizes
 
-        when:   follow(1, 2)
-        then:   userWalls()*.size() == [3+2, 2+3+1, 1, 0]
+        when:   follow(users[1], users[2])
+                expectedWallSizes[1] += expectedPostCounts[2]
+        then:   userWalls()*.size() == expectedWallSizes
 
-        when:   follow(3, 1)
-        then:   userWalls()*.size() == [3+2, 2+3+1, 1, 2]
+        when:   follow(users[3], users[1])
+                expectedWallSizes[3] += expectedPostCounts[1] 
+        then:   userWalls()*.size() == expectedWallSizes
                 
-        //4) adding new posts will update the follower walls
+        /*4) adding new posts will update the follower walls */
         when:   post(users[0], 'u0 m4')
-                post(users[1], 'u1 m3')
-        then:   userWalls()*.size() == [4+3, 3+4+1, 1, 3]
+                expectedWallSizes[0]++ 
+                expectedWallSizes[1]++ 
+                
+        and:    post(users[1], 'u1 m3')
+                expectedWallSizes[0]++ 
+                expectedWallSizes[1]++ 
+                expectedWallSizes[3]++ 
+        then:   userWalls()*.size() == expectedWallSizes
     
-        // 5) the walls are sorted in a newest-on-top order?'() {
+        /* 5) the walls are sorted in a newest-on-top order? */
         expect: for (posts in userWalls()*.collect()) 
                     assert posts == posts.toSorted()
     } 
@@ -61,7 +74,7 @@ class CommandTest extends Specification {
         new PostCommand(timelines, user, message).apply()
         TIME.advanceSeconds(new Random().nextInt(10_0000))
     }
-    static void follow(int userId, int followeeId) { new FollowCommand(subscriptions, users[userId], users[followeeId]).apply() }
+    static void follow(User user, User followee) { new FollowCommand(subscriptions, user, followee).apply() }
     static userTimelines() { users.collect { new ReadCommand(timelines, it).apply() } }
     static userWalls() { users.collect { new DisplayWallCommand(timelines, subscriptions, it).apply() } }
 }
