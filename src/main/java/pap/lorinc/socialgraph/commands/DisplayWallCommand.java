@@ -1,33 +1,37 @@
 package pap.lorinc.socialgraph.commands;
 
 import javaslang.collection.List;
-import javaslang.collection.Traversable;
-import lombok.EqualsAndHashCode;
-import lombok.Value;
-import pap.lorinc.socialgraph.Post;
-import pap.lorinc.socialgraph.User;
+import pap.lorinc.socialgraph.posts.Post;
+import pap.lorinc.socialgraph.posts.Timelines;
+import pap.lorinc.socialgraph.users.Subscriptions;
+import pap.lorinc.socialgraph.users.User;
 
 import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-@Value @EqualsAndHashCode(callSuper = true)
 public class DisplayWallCommand extends Command {
-    public DisplayWallCommand(User user) { super(user); }
+    private final Timelines timelines;
+    private final Subscriptions subscriptions;
+    public DisplayWallCommand(Timelines timelines, Subscriptions subscriptions, User user) {
+        super(user);
+        this.timelines = timelines;
+        this.subscriptions = subscriptions;
+    }
 
     @Override public Iterable<Post> apply() {
         PriorityQueue<List<Post>> queue = new PriorityQueue<>((l1, l2) -> l1.head().compareTo(l2.head()));
-        user.getSubscriptions()
-            .map(User::getPosts)
-            .filter(Traversable::nonEmpty)
-            .forEach(queue::add);
+        subscriptions.get(user)
+                     .map(timelines::get)
+                     .filter(List::nonEmpty)
+                     .forEach(queue::add);
 
-        return () -> new PostIterator(queue);
+        return () -> new MergingTimelineIterator(queue);
     }
 
-    private static class PostIterator implements Iterator<Post> {
+    private static class MergingTimelineIterator implements Iterator<Post> {
         private final Queue<List<Post>> queue;
-        PostIterator(Queue<List<Post>> queue) { this.queue = queue; }
+        MergingTimelineIterator(Queue<List<Post>> queue) { this.queue = queue; }
 
         @Override public boolean hasNext() { return !queue.isEmpty(); }
         @Override public Post next() {

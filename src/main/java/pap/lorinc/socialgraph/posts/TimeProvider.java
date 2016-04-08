@@ -1,4 +1,4 @@
-package pap.lorinc.socialgraph;
+package pap.lorinc.socialgraph.posts;
 
 import java.time.Clock;
 import java.time.ZonedDateTime;

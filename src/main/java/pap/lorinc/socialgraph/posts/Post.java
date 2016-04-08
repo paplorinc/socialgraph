@@ -1,16 +1,15 @@
-package pap.lorinc.socialgraph;
+package pap.lorinc.socialgraph.posts;
 
-import lombok.Value;
+import pap.lorinc.socialgraph.users.User;
 
 import java.time.ZonedDateTime;
 
 import static java.lang.String.format;
 import static java.time.Duration.between;
-import static pap.lorinc.socialgraph.TimeProvider.TIME;
-import static pap.lorinc.socialgraph.utils.DateTimes.durationToString;
+import static pap.lorinc.socialgraph.posts.DateTimes.durationToString;
+import static pap.lorinc.socialgraph.posts.TimeProvider.TIME;
 
-@Value
-public class Post implements Comparable<Post> {
+public final class Post implements Comparable<Post> {
     private final ZonedDateTime time = TIME.now();
     private final User user;
     private final String message;

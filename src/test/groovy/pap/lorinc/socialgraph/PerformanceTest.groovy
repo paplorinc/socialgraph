@@ -4,16 +4,21 @@ import pap.lorinc.socialgraph.commands.DisplayWallCommand
 import pap.lorinc.socialgraph.commands.FollowCommand
 import pap.lorinc.socialgraph.commands.PostCommand
 import pap.lorinc.socialgraph.commands.ReadCommand
+import pap.lorinc.socialgraph.posts.Timelines
+import pap.lorinc.socialgraph.users.Subscriptions
+import pap.lorinc.socialgraph.users.User
 import spock.lang.Specification
 
 import java.time.Duration
 import java.time.ZonedDateTime
 
-import static pap.lorinc.socialgraph.TimeProvider.TIME
-import static pap.lorinc.socialgraph.utils.DateTimes.durationToString
+import static pap.lorinc.socialgraph.posts.DateTimes.durationToString
+import static pap.lorinc.socialgraph.posts.TimeProvider.TIME
 
-class LoadTest extends Specification {
+class PerformanceTest extends Specification {
     static R = new Random(0)
+    static timelines = new Timelines()
+    static subscriptions = new Subscriptions()
 
     /*@formatter:off*/
     def 'stress-test'() {
@@ -33,13 +38,15 @@ class LoadTest extends Specification {
                         follow(users[userIndex], users[followeeIndex])
                     }
                 }
-        then:   'querying their timeline content is fast'
+        then:   'querying their List<Post> content is fast'
                 timed {
-                    for (u in users) read(u).collect()
+                    for (u in users) 
+                        read(u).collect()
                 } < Duration.ofSeconds(1)
         and:   'querying their wall content is fast'
                 timed {
-                    for (u in users) displayWall(u).collect()
+                    for (u in users) 
+                        displayWall(u).collect()
                 } < Duration.ofMinutes(1)
     }
     /*@formatter:on*/
@@ -53,10 +60,10 @@ class LoadTest extends Specification {
     }
 
     static void post(User user, String message) {
-        new PostCommand(user, message).apply()
+        new PostCommand(timelines, user, message).apply()
         TIME.advanceSeconds(R.nextInt(10_0000))
     }
-    static void follow(User user, User followee) { new FollowCommand(user, followee).apply() }
-    static read(User user) { new ReadCommand(user).apply() }
-    static displayWall(User user) { new DisplayWallCommand(user).apply() }
+    static void follow(User user, User followee) { new FollowCommand(subscriptions, user, followee).apply() }
+    static read(User user) { new ReadCommand(timelines, user).apply() }
+    static displayWall(User user) { new DisplayWallCommand(timelines, subscriptions, user).apply() }
 }

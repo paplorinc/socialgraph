@@ -1,9 +1,8 @@
 package pap.lorinc.socialgraph
 
-import org.spockframework.util.StringMessagePrintStream
 import spock.lang.Specification
 
-import static pap.lorinc.socialgraph.SocialGraph.defaultParser
+import static pap.lorinc.socialgraph.SocialGraph.defaultFactory
 import static pap.lorinc.socialgraph.SocialGraph.run
 
 class SocialGraphTest extends Specification {
@@ -19,9 +18,8 @@ class SocialGraphTest extends Specification {
                        Charlie follows Alice
                        Charlie wall
                        Charlie follows Bob
-                       Charlie wall
-                    '''.bytes 
-                def expectedOutput = new ArrayDeque<String>(
+                       Charlie wall'''.readLines() 
+                def output =
                     '''Alice: `I love the weather today`
                        Bob: `Good game though.`
                        Bob: `Damn! We lost!`
@@ -30,12 +28,14 @@ class SocialGraphTest extends Specification {
                        Charlie: `I'm in New York today! Anyone wants to have a coffee?`
                        Bob: `Good game though.`
                        Bob: `Damn! We lost!`
-                       Alice: `I love the weather today`
-                    '''.trim().split('\n').toList())
+                       Alice: `I love the weather today`'''.readLines() as ArrayDeque<String> 
         
-        then:   run(new ByteArrayInputStream(input),
-                    { assert it.startsWith(expectedOutput.pop().trim()) } as StringMessagePrintStream,
-                    defaultParser()
+        then:   run(input,
+                    { 
+                        sleep(100)
+                        assert "$it".startsWith(output.pop().trim())
+                    },
+                    defaultFactory()
                 )
     }   
     /*@formatter:on*/

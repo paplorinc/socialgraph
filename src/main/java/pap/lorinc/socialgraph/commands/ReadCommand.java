@@ -1,13 +1,15 @@
 package pap.lorinc.socialgraph.commands;
 
-import lombok.EqualsAndHashCode;
-import lombok.Value;
-import pap.lorinc.socialgraph.Post;
-import pap.lorinc.socialgraph.User;
+import pap.lorinc.socialgraph.posts.Post;
+import pap.lorinc.socialgraph.posts.Timelines;
+import pap.lorinc.socialgraph.users.User;
 
-@Value @EqualsAndHashCode(callSuper = true)
 public class ReadCommand extends Command {
-    public ReadCommand(User user) { super(user); }
+    private final Timelines timelines;
+    public ReadCommand(Timelines timelines, User user) {
+        super(user);
+        this.timelines = timelines;
+    }
 
-    @Override public Iterable<Post> apply() { return user.getPosts(); }
+    @Override public Iterable<Post> apply() { return timelines.get(user); }
 }

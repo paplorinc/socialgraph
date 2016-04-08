@@ -1,8 +1,7 @@
-package pap.lorinc.socialgraph.utils;
+package pap.lorinc.socialgraph.posts;
 
 import javaslang.collection.Stream;
 import javaslang.control.Option;
-import lombok.experimental.UtilityClass;
 
 import java.time.Duration;
 import java.util.function.Supplier;
@@ -10,7 +9,6 @@ import java.util.function.Supplier;
 import static javaslang.control.Option.none;
 import static javaslang.control.Option.of;
 
-@UtilityClass
 public class DateTimes {
     private static final int HOURS_PER_DAY = 24, MINUTES_PER_HOUR = 60, SECONDS_PER_MINUTE = 60, MILLIS_PER_SECOND = 1000;
 

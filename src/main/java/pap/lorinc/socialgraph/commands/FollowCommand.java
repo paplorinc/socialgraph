@@ -1,22 +1,22 @@
 package pap.lorinc.socialgraph.commands;
 
-import lombok.EqualsAndHashCode;
-import lombok.Value;
-import pap.lorinc.socialgraph.Post;
-import pap.lorinc.socialgraph.User;
+import pap.lorinc.socialgraph.posts.Post;
+import pap.lorinc.socialgraph.users.Subscriptions;
+import pap.lorinc.socialgraph.users.User;
 
 import static javaslang.collection.Iterator.empty;
 
-@Value @EqualsAndHashCode(callSuper = true)
 public class FollowCommand extends Command {
+    private final Subscriptions subscriptions;
     private final User followee;
-    public FollowCommand(User user, User followee) {
+    public FollowCommand(Subscriptions subscriptions, User user, User followee) {
         super(user);
+        this.subscriptions = subscriptions;
         this.followee = followee;
     }
 
     @Override public Iterable<Post> apply() {
-        user.subscribe(followee);
+        subscriptions.put(user, followee);
         return empty();
     }
 }

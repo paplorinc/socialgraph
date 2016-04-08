@@ -1,4 +1,4 @@
-package pap.lorinc.socialgraph
+package pap.lorinc.socialgraph.users
 
 import spock.lang.Specification
 import spock.lang.Unroll

@@ -1,9 +1,9 @@
-package pap.lorinc.socialgraph.utils
+package pap.lorinc.socialgraph.commands.factory
 
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static pap.lorinc.socialgraph.utils.Matchers.matcher
+import static pap.lorinc.socialgraph.commands.factory.Matchers.matcher
 
 @Unroll class MatchersTest extends Specification {
     /*@formatter:off*/

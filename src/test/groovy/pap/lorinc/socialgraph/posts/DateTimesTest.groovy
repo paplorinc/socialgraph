@@ -1,10 +1,10 @@
-package pap.lorinc.socialgraph.utils
+package pap.lorinc.socialgraph.posts
 
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import static java.time.Duration.parse
-import static pap.lorinc.socialgraph.utils.DateTimes.durationToString
+import static pap.lorinc.socialgraph.posts.DateTimes.durationToString
 
 @Unroll class DateTimesTest extends Specification {
     /*@formatter:off*/

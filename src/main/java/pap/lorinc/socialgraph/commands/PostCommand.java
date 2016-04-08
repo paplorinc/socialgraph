@@ -1,22 +1,22 @@
 package pap.lorinc.socialgraph.commands;
 
-import lombok.EqualsAndHashCode;
-import lombok.Value;
-import pap.lorinc.socialgraph.Post;
-import pap.lorinc.socialgraph.User;
+import pap.lorinc.socialgraph.posts.Post;
+import pap.lorinc.socialgraph.posts.Timelines;
+import pap.lorinc.socialgraph.users.User;
 
 import static javaslang.collection.Iterator.empty;
 
-@Value @EqualsAndHashCode(callSuper = true)
 public class PostCommand extends Command {
+    private final Timelines timelines;
     private final String message;
-    public PostCommand(User user, String message) {
+    public PostCommand(Timelines timelines, User user, String message) {
         super(user);
+        this.timelines = timelines;
         this.message = message;
     }
 
     @Override public Iterable<Post> apply() {
-        user.post(new Post(user, message));
+        timelines.put(user, new Post(user, message));
         return empty();
     }
 } 

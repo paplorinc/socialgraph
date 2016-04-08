@@ -1,52 +1,51 @@
-package pap.lorinc.socialgraph
+package pap.lorinc.socialgraph.commands.factory
 
 import pap.lorinc.socialgraph.commands.DisplayWallCommand
 import pap.lorinc.socialgraph.commands.FollowCommand
 import pap.lorinc.socialgraph.commands.PostCommand
 import pap.lorinc.socialgraph.commands.ReadCommand
+import pap.lorinc.socialgraph.users.User
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static pap.lorinc.socialgraph.SocialGraph.defaultParser
+import static pap.lorinc.socialgraph.SocialGraph.defaultFactory
 
-@Unroll class ParserTest extends Specification {
-    static parser = defaultParser()
+@Unroll class CommandsTest extends Specification {
+    static factory = defaultFactory()
 
     /*@formatter:off*/
     def 'can parse Post input: "#command"?'() {
-        expect: parser.parse(command).get() == new PostCommand(User.of(user), message) 
+        when:   def post = factory.create("$user -> $message").get() as PostCommand
+        then:   [post.user, post.message] == [User.of(user), message] 
 
         where:  user | message
                 'u1' | 'u1 m1' 
                 'u2' | 'u2 m1' 
                 'u2' | 'u2 m2' 
-                
-                command = "$user -> $message" 
     } 
 
     def 'can parse Follow input: "#command"?'() {
-        expect: parser.parse(command).get() == new FollowCommand(User.of(follower), User.of(followee)) 
+        when:   def post = factory.create("$follower follows $followee").get() as FollowCommand
+        then:   [post.user, post.followee] == [User.of(follower), User.of(followee)] 
 
         where:  follower | followee
                 'u1'     | 'u1' 
                 'u1'     | 'u2' 
                 'u2'     | 'u1' 
-                
-                command = "$follower follows $followee" 
     }
     
     def 'can parse Read input: "#command"?'() {
-        expect: parser.parse(command).get() == new ReadCommand(User.of(user)) 
+        when:   def post = factory.create("$user").get() as ReadCommand
+        then:   post.user == User.of(user) 
 
         where:  user << ['u1', 'u2', 'u2'] 
-                command = "$user" 
     } 
     
     def 'can parse DisplayWall input: "#command"?'() {
-        expect: parser.parse(command).get() == new DisplayWallCommand(User.of(user)) 
+        when:   def post = factory.create("$user wall").get() as DisplayWallCommand
+        then:   post.user == User.of(user) 
 
         where:  user << ['u1', 'u2', 'u2'] 
-                command = "$user wall" 
     }
     /*@formatter:on*/
 }
