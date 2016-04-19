@@ -1,5 +1,6 @@
 package pap.lorinc.socialgraph;
 
+import javaslang.API;
 import pap.lorinc.socialgraph.actions.commands.Command;
 import pap.lorinc.socialgraph.actions.commands.FollowCommand;
 import pap.lorinc.socialgraph.actions.commands.PostCommand;
@@ -33,12 +34,9 @@ public class SocialGraph {
     }
 
     static void main(Iterable<String> in, Consumer<Post> out, Actions actions) {
-        for (String actionString : in)
-            actions.create(actionString)
-                   .peek(action -> Match(action).of(
-                           Case(instanceOf(Command.class), c -> run(() -> c.run())),
-                           Case(instanceOf(Query.class), q -> run(() -> q.get().forEach(out))))
-                        );
+        in.forEach(line -> actions.create(line).peek(action -> Match(action).of(
+                Case(instanceOf(Command.class), API::run),
+                Case(instanceOf(Query.class), q -> run(() -> q.forEach(out))))));
     }
 
     static Actions defaultFactory() {
