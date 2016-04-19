@@ -31,10 +31,10 @@ class SocialGraphTest extends Specification {
                        Alice: `I love the weather today`'''.readLines() as ArrayDeque<String> 
         
         then:   main(input,
-                    { 
+                    {
+                        sleep(100)
                         def expected = output.pop().trim()
                         assert "$it".startsWith(expected)
-                        sleep(100) 
                     },
                     defaultFactory()
                 )

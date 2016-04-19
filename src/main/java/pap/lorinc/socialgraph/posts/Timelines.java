@@ -3,17 +3,20 @@ package pap.lorinc.socialgraph.posts;
 import javaslang.collection.HashMap;
 import javaslang.collection.List;
 import javaslang.collection.Map;
+import javaslang.collection.Seq;
 import pap.lorinc.socialgraph.users.User;
 
-public class Timelines {
-    private Map<User, List<Post>> registry = HashMap.empty();
+import static javaslang.collection.List.of;
 
-    public List<Post> get(User user) {
+public class Timelines {
+    private Map<User, Seq<Post>> registry = HashMap.empty();
+
+    public Seq<Post> get(User user) {
         return registry.get(user)
-                       .getOrElse(List.empty());
+                       .getOrElse(List::empty);
     }
     public void put(User user, Post... posts) {
-        List<Post> results = get(user).prependAll(List.of(posts));
+        Seq<Post> results = get(user).prependAll(of(posts));
         registry = registry.put(user, results);
     }
 }
