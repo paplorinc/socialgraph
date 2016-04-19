@@ -10,7 +10,6 @@ import static java.util.regex.Pattern.compile;
 public class Matchers {
     public static Option<Matcher> matcher(String line, @RegExp String pattern) {
         Matcher matcher = compile(pattern).matcher(line.trim());
-        return Option.when(matcher.matches() && (matcher.groupCount() > 0),
-                           () -> matcher);
+        return Option.when(matcher.matches() && (matcher.groupCount() > 0), matcher);
     }
 }
