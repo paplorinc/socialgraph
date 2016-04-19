@@ -38,7 +38,7 @@ class PerformanceTest extends Specification {
                         follow(users[userIndex], users[followeeIndex])
                     }
                 }
-        then:   'querying their List<Post> content is fast'
+        then:   'querying their timeline content is fast'
                 timed {
                     for (u in users) 
                         read(u).collect()

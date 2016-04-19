@@ -17,13 +17,13 @@ Using the application
 
 The following features are available:
 
-* `Posting` — Users can publish messages to their List<Post>s: `<user name> -> <message>` 
+* `Posting` — Users can publish messages to their timelines: `<user name> -> <message>`
 
         > Alice -> I love the weather today
         > Bob -> Damn! We lost!
         > Bob -> Good game though.
   
-* `Reading` — Users' List<Post>s can be viewed: `<user name>`
+* `Reading` — Users' timelines can be viewed: `<user name>`
  
         > Alice
         Alice: I love the weather today (5 minutes ago)
