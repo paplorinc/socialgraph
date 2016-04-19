@@ -35,7 +35,7 @@ repositories {
 }
 
 dependencies {
-    compile([group: 'io.javaslang', name: 'javaslang', version: '2.0.2']
+    compile([group: 'io.javaslang', name: 'javaslang', version: '2.1.0-SNAPSHOT']
     )
 
     compileOnly([group: 'org.jetbrains', name: 'annotations', version: '15.0']
